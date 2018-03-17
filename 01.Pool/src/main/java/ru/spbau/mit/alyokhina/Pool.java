@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 /**
  * Task pool with a fixed number of threads
  */
-public class Pool {
+public class Pool<T> {
     /**
      * All created threads
      */
@@ -40,7 +40,7 @@ public class Pool {
                         cur.calculate();
                     }
                 }
-                catch (InterruptedException e) {
+                catch (InterruptedException ignored) {
                 }
             }
             );
@@ -65,8 +65,8 @@ public class Pool {
     /**
      * Add new task and notify threads that are waiting for a new task
      */
-    public <E> LightFuture<E> add(Supplier<E> supplier) {
-        LightFutureImpl<E> newTask = new LightFutureImpl<>(supplier);
+    public  LightFuture<T> add(Supplier<T> supplier) {
+        LightFutureImpl newTask = new LightFutureImpl(supplier);
         synchronized (tasks) {
             tasks.add(newTask);
             tasks.notify();
@@ -77,7 +77,7 @@ public class Pool {
     /**
      * Class for task implements LightFuture
      */
-    private class LightFutureImpl<T> implements LightFuture<T> {
+    private class LightFutureImpl implements LightFuture<T> {
         /**
          * value was calculated
          */
@@ -152,7 +152,7 @@ public class Pool {
          *
          * @return new task type of E
          */
-        public <E> LightFuture<E> thenApply(Function<T, E> function) {
+        public LightFuture<T> thenApply(Function<T, T> function) {
             return add(() -> {
                 try {
                     return function.apply(get());

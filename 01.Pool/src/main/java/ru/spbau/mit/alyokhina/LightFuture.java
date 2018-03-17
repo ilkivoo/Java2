@@ -18,5 +18,5 @@ public interface LightFuture<T> {
      * Accepts an object of type Function that can be applied to the result of this task T and returns a new task E accepted for execution
      * @return new task type of E
      */
-    <E> LightFuture<E> thenApply(Function<T, E> function);
+    LightFuture<T> thenApply(Function<T, T> function);
 }
