@@ -15,8 +15,8 @@ public interface LightFuture<T> {
     T get() throws LightExecutionException;
 
     /**
-     * Accepts an object of type Function that can be applied to the result of this task T and returns a new task E accepted for execution
-     * @return new task type of E
+     * Accepts an object of type Function that can be applied to the result of this task T and returns a new task T accepted for execution
+     * @return new task type of T
      */
     LightFuture<T> thenApply(Function<T, T> function);
 }
