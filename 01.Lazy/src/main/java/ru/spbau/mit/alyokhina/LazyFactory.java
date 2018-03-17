@@ -74,7 +74,7 @@ public class LazyFactory<T> {
      */
     private static class LazyMultiThreadMode<T> implements Lazy<T> {
         /** The Lazy object is created on the basis of calculations (represented by the supplier) */
-        private Supplier<T> supplier;
+        private volatile Supplier<T> supplier;
 
         /** Value that came after calling the supplier (null - if there was no call) */
         private T ans;
