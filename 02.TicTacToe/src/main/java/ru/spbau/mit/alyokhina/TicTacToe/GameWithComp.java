@@ -2,7 +2,7 @@ package ru.spbau.mit.alyokhina.TicTacToe;
 
 
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.GridPane;
 
 import java.util.Random;
 import java.util.function.Consumer;
@@ -13,8 +13,8 @@ public class GameWithComp extends Game {
      *
      * @param statistics for collection information
      */
-    public GameWithComp(Pane pane, Statistics statistics) {
-        super(pane, statistics);
+    public GameWithComp(GridPane gridPane, Statistics statistics) {
+        super(gridPane, statistics);
     }
 
 
@@ -24,17 +24,17 @@ public class GameWithComp extends Game {
      */
     @Override
     public void menu() {
-        CreateElements.createButtonGetStatisticsForOnePlayers(pane, statistics, value -> menu());
-        Button buttonEasyLevel = CreateElements.createButton(pane, 50, 200, 200, 70, "Легкий");
-        Button buttonHardLevel = CreateElements.createButton(pane, 50, 200, 200, 170, "Сложный");
+        CreateElements.createButtonGetStatisticsForOnePlayers(gridPane, statistics, value -> menu());
+        Button buttonEasyLevel = CreateElements.createButton(gridPane, 50, 200, 200, 70, "Легкий");
+        Button buttonHardLevel = CreateElements.createButton(gridPane, 50, 200, 200, 170, "Сложный");
         buttonEasyLevel.setOnAction(value -> {
-            pane.getChildren().clear();
-            CreateElements.createButtonToMainActivity(pane);
+            gridPane.getChildren().clear();
+            CreateElements.createButtonToMainActivity(gridPane);
             playGame(this::moveCompEasyLevel);
         });
         buttonHardLevel.setOnAction(value -> {
-            pane.getChildren().clear();
-            CreateElements.createButtonToMainActivity(pane);
+            gridPane.getChildren().clear();
+            CreateElements.createButtonToMainActivity(gridPane);
             playGame(this::moveCompHardLevel);
         });
     }
@@ -45,8 +45,8 @@ public class GameWithComp extends Game {
      * @param moveComp move computer
      */
     private void playGame(Consumer<Button[]> moveComp) {
-        CreateElements.createButtonReplay(pane, statistics, this::goBack);
-        Button[] table = CreateElements.createTableView(pane);
+        CreateElements.createButtonReplay(gridPane, statistics, this::goBack);
+        Button[] table = CreateElements.createTableView(gridPane);
         if (numberGames % 2 == 0) {
             moveComp.accept(table);
         }

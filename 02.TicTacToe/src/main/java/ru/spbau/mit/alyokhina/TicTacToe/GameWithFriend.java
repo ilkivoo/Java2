@@ -1,6 +1,7 @@
 package ru.spbau.mit.alyokhina.TicTacToe;
 
 import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 
@@ -11,25 +12,25 @@ public class GameWithFriend extends Game {
      *
      * @param statistics for collection information
      */
-    public GameWithFriend(Pane pane, Statistics statistics) {
-        super(pane, statistics);
+    public GameWithFriend(GridPane gridPane, Statistics statistics) {
+        super(gridPane, statistics);
     }
 
     /** Menu. Two categories : play and get statistics */
     @Override
     public void menu() {
-        Button buttonPlay = CreateElements.createButton(pane, 50, 200, 200, 110, "Играть");
+        Button buttonPlay = CreateElements.createButton(gridPane, 50, 200, 200, 110, "Играть");
         buttonPlay.setOnAction(actionEvent -> {
-            pane.getChildren().clear();
-            CreateElements.createButtonReplay(this.pane, statistics, this::goBack);
+            gridPane.getChildren().clear();
+            CreateElements.createButtonReplay(this.gridPane, statistics, this::goBack);
             playGame();
         });
-        CreateElements.createButtonGetStatisticsForTwoPlayers(pane, statistics, value -> menu());
+        CreateElements.createButtonGetStatisticsForTwoPlayers(gridPane, statistics, value -> menu());
     }
 
     /** Start play */
     private void playGame() {
-        Button[] table = CreateElements.createTableView(pane);
+        Button[] table = CreateElements.createTableView(gridPane);
         changeMove(table, 0);
     }
 

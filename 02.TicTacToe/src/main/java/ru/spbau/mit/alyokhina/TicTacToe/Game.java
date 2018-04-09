@@ -1,28 +1,38 @@
 package ru.spbau.mit.alyokhina.TicTacToe;
 
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.GridPane;
 
-/** Class for key actions of game */
+/**
+ * Class for key actions of game
+ */
 public class Game {
     /**
-     * Pane for current game
+     * GridPane for current game
      */
-    protected Pane pane;
-    /** Number playing */
+    protected GridPane gridPane;
+    /**
+     * Number playing
+     */
     protected int numberGames = 0;
-    /** Statistics for current game */
+    /**
+     * Statistics for current game
+     */
     protected Statistics statistics;
 
-    /** Constructor */
-    public Game(Pane pane, Statistics statistics) {
-        this.pane = pane;
+    /**
+     * Constructor
+     */
+    public Game(GridPane gridPane, Statistics statistics) {
+        this.gridPane = gridPane;
         this.statistics = statistics;
-        pane.getChildren().clear();
-        CreateElements.createButtonToMainActivity(pane);
+        gridPane.getChildren().clear();
+        CreateElements.createButtonToMainActivity(gridPane);
     }
 
-    /** Translated text from buttons array in string array */
+    /**
+     * Translated text from buttons array in string array
+     */
     protected String[] toStringArray(Button[] table) {
         String[] tableString = new String[table.length];
         for (int i = 0; i < table.length; i++) {
@@ -89,32 +99,40 @@ public class Game {
         return result;
     }
 
-    /** Print result games */
+    /**
+     * Print result games
+     */
     private void setResult(String win) {
         numberGames++;
-        CreateElements.setResult(pane, statistics, win);
-        CreateElements.createButtonReplay(pane, statistics, this::goBack);
+        CreateElements.setResult(gridPane, statistics, win);
+        CreateElements.createButtonReplay(gridPane, statistics, this::goBack);
     }
 
-    /** For return in this activity */
+    /**
+     * For return in this activity
+     */
     protected void goBack(Statistics statistics) {
         this.statistics = statistics;
-        pane.getChildren().clear();
-        CreateElements.createButtonToMainActivity(pane);
+        gridPane.getChildren().clear();
+        CreateElements.createButtonToMainActivity(gridPane);
         menu();
     }
 
-    /** Symbol to which the player move */
+    /**
+     * Symbol to which the player move
+     */
 
     public String getCompSymb(int player) {
         return (numberGames % 2 == player) ? "X" : "O";
     }
 
 
-    /** Before games we should choose characteristics game */
+    /**
+     * Before games we should choose characteristics game
+     */
     public void menu() {
-        CreateElements.createButton(pane, 50, 200, 200, 70, "Легкий");
-        CreateElements.createButton(pane, 50, 200, 200, 170, "Сложный");
+        CreateElements.createButton(gridPane, 50, 200, 200, 70, "Легкий");
+        CreateElements.createButton(gridPane, 50, 200, 200, 170, "Сложный");
     }
 
 }
