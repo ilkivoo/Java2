@@ -51,7 +51,7 @@ public class ClientTest {
             rightAnswer.add(new Pair<>("file3", false));
             rightAnswer.add(new Pair<>("file1", false));
             rightAnswer.add(new Pair<>("file2", false));
-            assertEquals(true, equalLists(rightAnswer, files));
+            assertEquals(rightAnswer.size(), equalLists(rightAnswer, files));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -77,7 +77,7 @@ public class ClientTest {
             rightAnswer1.add(new Pair<>("file3", false));
             rightAnswer1.add(new Pair<>("file1", false));
             rightAnswer1.add(new Pair<>("file2", false));
-            assertEquals(true, equalLists(rightAnswer1, files1));
+            assertEquals(rightAnswer1.size(), equalLists(rightAnswer1, files1));
 
             List<Pair<String, Boolean>> rightAnswer2 = new ArrayList<>();
             rightAnswer2.add(new Pair<>("dir1", true));
@@ -87,7 +87,7 @@ public class ClientTest {
             rightAnswer2.add(new Pair<>("dir5", true));
             rightAnswer2.add(new Pair<>("file1", false));
             rightAnswer2.add(new Pair<>("file2", false));
-            assertEquals(true, equalLists(files2, rightAnswer2));
+            assertEquals(rightAnswer2.size(), equalLists(files2, rightAnswer2));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -176,10 +176,11 @@ public class ClientTest {
 
 
     /** Compare two List<Pair<String, Boolean>> */
-    private static boolean equalLists(List<Pair<String, Boolean>> a, List<Pair<String, Boolean>> b) {
+    private static int equalLists(List<Pair<String, Boolean>> a, List<Pair<String, Boolean>> b) {
         if (a.size() != b.size()) {
-            return false;
+            return -1;
         }
+        int i = 0;
         for (Pair<String, Boolean> elem1 : a) {
             boolean flag = false;
             for (Pair<String, Boolean> elem2 : b) {
@@ -188,10 +189,11 @@ public class ClientTest {
                 }
             }
             if (!flag) {
-                return false;
+                return i;
             }
+            i++;
         }
-        return true;
+        return a.size();
     }
 
     /** Compare files */
