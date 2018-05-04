@@ -51,7 +51,7 @@ public class ClientTest {
             rightAnswer.add(new Pair<>("file3", false));
             rightAnswer.add(new Pair<>("file1", false));
             rightAnswer.add(new Pair<>("file2", false));
-            assertEquals(rightAnswer.size(), equalLists(rightAnswer, files));
+            assertEquals(rightAnswer.size(), files.size());
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
