@@ -27,6 +27,7 @@ public class TestExecutor {
     public List<TestResult> run() throws InvocationTargetException, IllegalAccessException {
         List<TestResult> results = new ArrayList<>();
         if (beforeClass.size() != 0) {
+            beforeClass.get(0).setAccessible(true);
             beforeClass.get(0).invoke(instance);
         }
 
@@ -36,6 +37,7 @@ public class TestExecutor {
         }
 
         if (afterClass.size() != 0) {
+            afterClass.get(0).setAccessible(true);
             afterClass.get(0).invoke(instance);
         }
 
@@ -91,11 +93,13 @@ public class TestExecutor {
         Exception exception = null;
         try {
             if (before.size() != 0) {
+                before.get(0).setAccessible(true);
                 before.get(0).invoke(instance);
             }
             method.invoke(instance);
 
             if (after.size() != 0) {
+                after.get(0).setAccessible(true);
                 after.get(0).invoke(instance);
             }
         } catch (InvocationTargetException e) {
