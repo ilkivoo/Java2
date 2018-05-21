@@ -7,23 +7,50 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Class for tests run */
 public class TestExecutor {
+    /** Instance of class  for calling tests */
     private Object instance;
+
+    /** Class name for test runs */
     private String testClassName;
+
+    /** Methods with annotation Before */
     private List<Method> before = new ArrayList<>();
+
+    /** Methods with annotation BeforeClass */
     private List<Method> beforeClass = new ArrayList<>();
+
+    /** Methods with annotation After */
     private List<Method> after = new ArrayList<>();
+
+    /** Methods with annotation AfterClass */
     private List<Method> afterClass = new ArrayList<>();
+
+    /** Methods with annotation Test */
     private List<Method> tests = new ArrayList<>();
 
 
-    public TestExecutor(Class<?> clazz) throws IllegalAccessException, InstantiationException {
+    /**
+     * Constructor
+     * @param clazz class from which tests will be run
+     * @throws IllegalAccessException if newInstance threw IllegalAccessException
+     * @throws InstantiationException if newInstance threw InstantiationException
+     * @throws TestExecutorException if if wrong number methods with annotation
+     */
+    public TestExecutor(Class<?> clazz) throws IllegalAccessException, InstantiationException, TestExecutorException {
         getMethods(clazz);
         instance = clazz.newInstance();
         testClassName = clazz.getName();
     }
 
 
+    /**
+     * Run tests
+     * @return list of results of each test
+     * @throws InvocationTargetException if we catch exception from the BeforeClass or the AfterClass
+     * @throws IllegalAccessException if invoke threw InvocationTargetException
+     */
     public List<TestResult> run() throws InvocationTargetException, IllegalAccessException {
         List<TestResult> results = new ArrayList<>();
         if (beforeClass.size() != 0) {
@@ -45,6 +72,16 @@ public class TestExecutor {
     }
 
 
+    /**
+     *
+     * @param time test run time
+     * @param className class name for test
+     * @param testName test name
+     * @param isFail test failure
+     * @param causeOfIgnoring reason for which the test was ignored
+     * @param e Exception that was thrown by the test
+     * @return information about test in interface TestResult
+     */
     private TestResult getResult(final long time, final String className, final String testName,
                                  final boolean isFail, final String causeOfIgnoring, final Exception e) {
         return new TestResult() {
@@ -82,6 +119,12 @@ public class TestExecutor {
     }
 
 
+    /**
+     * invoke method
+     * @param method method that will be called
+     * @return information about passing the test
+     * @throws IllegalAccessException if invoke threw IllegalAccessException
+     */
     private TestResult invoke(final Method method) throws IllegalAccessException {
         final Test testAnnotation = method.getAnnotation(Test.class);
 
@@ -116,7 +159,12 @@ public class TestExecutor {
 
     }
 
-    private void getMethods(Class<?> testClazz) {
+    /**
+     * Group methods with annotation in class
+     * @param testClazz class for test
+     * @throws TestExecutorException if wrong number methods with annotation
+     */
+    private void getMethods(Class<?> testClazz) throws TestExecutorException {
         Class[] classes = {After.class, AfterClass.class, Before.class, BeforeClass.class, Test.class};
         List<List<Method>> lists = new ArrayList<>();
         lists.add(after);
@@ -129,8 +177,7 @@ public class TestExecutor {
             for (int i = 0; i < classes.length; i++) {
                 if (method.getAnnotation(classes[i]) != null) {
                     if (flag) {
-                        //ERROR
-                        System.out.println("ERROR");
+                        throw new TestExecutorException("too much annotations for method " + method.getName());
                     }
                     lists.get(i).add(method);
                     flag = true;
@@ -139,8 +186,7 @@ public class TestExecutor {
         }
         for (int i = 0; i < lists.size() - 1; i++) {
             if (lists.get(i).size() > 1) {
-                //ERROR
-                System.out.println("ERROR");
+                throw new TestExecutorException("too much methods with annotation  " + classes[i].getName());
             }
         }
     }

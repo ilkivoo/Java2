@@ -15,7 +15,7 @@ public class TestExecutorTest {
 
     @Test
     public void testWithBeforeAndAfter() throws ClassNotFoundException, InvocationTargetException,
-            IllegalAccessException, InstantiationException {
+            IllegalAccessException, InstantiationException, TestExecutorException {
         TestExecutor testExecutor = new TestExecutor(Class.forName("ru.spbau.mit.alyokhina.ClassForTests.TestWithBeforeAndAfter"));
         List<TestResult> results = testExecutor.run();
         assertEquals(3, results.size());
@@ -25,7 +25,7 @@ public class TestExecutorTest {
 
     @Test
     public void testWithBeforeClassAndAfterClass() throws ClassNotFoundException, InvocationTargetException,
-            IllegalAccessException, InstantiationException {
+            IllegalAccessException, InstantiationException, TestExecutorException {
         TestExecutor testExecutor = new TestExecutor(Class.forName("ru.spbau.mit.alyokhina.ClassForTests.TestWithBeforeClassAndAfterClass"));
         List<TestResult> results = testExecutor.run();
         assertEquals(3, results.size());
@@ -36,7 +36,7 @@ public class TestExecutorTest {
 
     @Test
     public void testWithException() throws ClassNotFoundException, InvocationTargetException,
-            IllegalAccessException, InstantiationException {
+            IllegalAccessException, InstantiationException, TestExecutorException {
         TestExecutor testExecutor = new TestExecutor(Class.forName("ru.spbau.mit.alyokhina.ClassForTests.TestWithException"));
         List<TestResult> results = testExecutor.run();
         assertEquals(5, results.size());
@@ -70,7 +70,7 @@ public class TestExecutorTest {
 
     @Test
     public void testWithIgnore() throws ClassNotFoundException, InvocationTargetException,
-            IllegalAccessException, InstantiationException {
+            IllegalAccessException, InstantiationException, TestExecutorException {
         TestExecutor testExecutor = new TestExecutor(Class.forName("ru.spbau.mit.alyokhina.ClassForTests.TestIgnored"));
         List<TestResult> results = testExecutor.run();
         assertEquals(4, results.size());
