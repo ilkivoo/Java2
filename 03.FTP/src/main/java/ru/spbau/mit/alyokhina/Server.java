@@ -6,11 +6,6 @@ import java.net.Socket;
 
 /** A server that processes two list requests and receives */
 public class Server {
-    /** Value for request list */
-    public static int LIST_REQUEST = 1;
-    /** Value for request get */
-    public static int GET_REQUEST = 2;
-
     /** Socket for connection with this server */
     private ServerSocket serverSocket;
 
@@ -36,9 +31,9 @@ public class Server {
                         while (!Thread.interrupted()) {
                             int requestType = dataInputStream.readInt();
                             String path = dataInputStream.readUTF();
-                            if (requestType == LIST_REQUEST) {
+                            if (requestType == Request.LIST_REQUEST.ordinal()) {
                                 list(path, dataOutputStream);
-                            } else if (requestType == GET_REQUEST) {
+                            } else if (requestType == Request.GET_REQUEST.ordinal()) {
                                 get(path, dataOutputStream);
                             }
                         }
@@ -77,7 +72,7 @@ public class Server {
      * Write file contents in dataOutputStream
      * @param path name of file
      * @param dataOutputStream OutputStream for write result
-     * @throws IOException
+     * @throws IOException  if it is impossible to write in dataOutputStream
      */
     private void get(String path, DataOutputStream dataOutputStream) throws IOException {
         File file = new File(path);

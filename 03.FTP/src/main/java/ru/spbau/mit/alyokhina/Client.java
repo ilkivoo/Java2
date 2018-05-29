@@ -37,7 +37,7 @@ public class Client {
      */
     public List<Pair<String, Boolean>> list(String path) throws IOException {
         List<Pair<String, Boolean>> listFiles = new ArrayList<>();
-        dataOutputStream.writeInt(Server.LIST_REQUEST);
+        dataOutputStream.writeInt(Request.LIST_REQUEST.ordinal());
         dataOutputStream.writeUTF(path);
         dataOutputStream.flush();
         int count = dataInputStream.readInt();
@@ -58,7 +58,7 @@ public class Client {
      * @throws IOException if we can't read/write in InputStream/OutputStream
      */
     public File get(String path, String nameFileForSave) throws IOException {
-        dataOutputStream.writeInt(Server.GET_REQUEST);
+        dataOutputStream.writeInt(Request.GET_REQUEST.ordinal());
         dataOutputStream.writeUTF(path);
         dataOutputStream.flush();
         File fileForSave = new File(nameFileForSave);
