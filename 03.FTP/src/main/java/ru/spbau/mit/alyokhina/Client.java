@@ -1,5 +1,6 @@
 package ru.spbau.mit.alyokhina;
 
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.*;
@@ -13,7 +14,7 @@ public class Client {
     private DataOutputStream dataOutputStream;
     /**InputStream from Socket*/
     private DataInputStream dataInputStream;
-
+    private Stage stage;
     /**
      * Constructor
      *
@@ -73,6 +74,20 @@ public class Client {
             dataOutputStreamForSave.write(bytes);
         }
         return fileForSave;
+    }
+
+    /**
+     * check file in server for existence
+     *
+     * @param path path of the file, that we want to check
+     * @return true - is exists, false - else
+     * @throws IOException if we can't write in dataOutputStream
+     */
+    public boolean isExists(String path) throws IOException {
+        dataOutputStream.writeInt(Request.IS_EXISTS_REQUEST.ordinal());
+        dataOutputStream.writeUTF(path);
+        dataOutputStream.flush();
+        return dataInputStream.readBoolean();
     }
 
 }

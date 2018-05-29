@@ -4,9 +4,13 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/** A server that processes two list requests and receives */
+/**
+ * A server that processes two list requests and receives
+ */
 public class Server {
-    /** Socket for connection with this server */
+    /**
+     * Socket for connection with this server
+     */
     private ServerSocket serverSocket;
 
     /**
@@ -20,7 +24,9 @@ public class Server {
 
     }
 
-    /** Start of the server */
+    /**
+     * Start of the server
+     */
     public void start() {
         while (true) {
             try {
@@ -35,6 +41,8 @@ public class Server {
                                 list(path, dataOutputStream);
                             } else if (requestType == Request.GET_REQUEST.ordinal()) {
                                 get(path, dataOutputStream);
+                            } else if (requestType == Request.IS_EXISTS_REQUEST.ordinal()) {
+                                isExist(path, dataOutputStream);
                             }
                         }
                     } catch (IOException e) {
@@ -70,9 +78,10 @@ public class Server {
 
     /**
      * Write file contents in dataOutputStream
-     * @param path name of file
+     *
+     * @param path             name of file
      * @param dataOutputStream OutputStream for write result
-     * @throws IOException  if it is impossible to write in dataOutputStream
+     * @throws IOException if it is impossible to write in dataOutputStream
      */
     private void get(String path, DataOutputStream dataOutputStream) throws IOException {
         File file = new File(path);
@@ -91,6 +100,17 @@ public class Server {
         } else {
             dataOutputStream.writeInt(length);
         }
+    }
+
+    /**
+     * check file for existence
+     *
+     * @param path path of the file, that we want to check
+     * @throws IOException if we can't write in dataOutputStream or create
+     */
+    private void isExist(String path, DataOutputStream dataOutputStream) throws IOException {
+        File file = new File(path);
+        dataOutputStream.writeBoolean(file.exists());
     }
 }
 
