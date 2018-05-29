@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- *
- */
+/** Console UI (list files on server and download files) */
 public class Main {
     public static void main(String[] args) {
         int type;
@@ -28,8 +26,7 @@ public class Main {
                     Thread thread = new Thread(server::start);
                     thread.start();
                     System.out.println("Сервер создан");
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
             }
@@ -66,15 +63,15 @@ public class Main {
                             System.out.print("Размер файла = ");
                             System.out.println(file.length());
                         }
-                    }while (typeRequest != 3);
+                    } while (typeRequest != 3);
 
 
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
             }
-        }while (type != 3);
+        } while (type != 3);
         System.exit(0);
     }
 }
+
