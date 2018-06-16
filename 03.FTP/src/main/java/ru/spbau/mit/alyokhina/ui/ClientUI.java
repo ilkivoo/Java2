@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class ClientUI {
     private Stage stage;
+
     /**
      * Constructor
      *
@@ -71,7 +72,7 @@ public class ClientUI {
                     if (dir.contains(listView.getSelectionModel().getSelectedItem())) {
                         printFiles(gridPane, client, path + '/' + listView.getSelectionModel().getSelectedItem());
                     } else {
-                        agreement(gridPane, client, path + '/' + listView.getSelectionModel().getSelectedItem());
+                        agreement(gridPane, client, path, listView.getSelectionModel().getSelectedItem());
                     }
                 });
 
@@ -91,17 +92,18 @@ public class ClientUI {
      *
      * @param gridPane on which objects will be placed
      * @param client   to communicate with the server
-     * @param path     path of the file, that we want to download
+     * @param dir      directory of the file, that would be download
+     * @param fileName name of the file, that would be download
      */
-    private void agreement(GridPane gridPane, Client client, String path) {
+    private void agreement(GridPane gridPane, Client client, String dir, String fileName) {
         gridPane.getChildren().clear();
         NewElementsCreator.createLabel(gridPane, 50, 200, 1, 0, "Вы уверены, что хотите скачать?");
         NewElementsCreator.addActionToButton(
                 NewElementsCreator.createButton(gridPane, 50, 50, 0, 1, "Да"),
-                actionEvent -> download(gridPane, client, path)
+                actionEvent -> download(gridPane, client, dir, fileName)
         );
 
-        NewElementsCreator.createBackButton(gridPane, 50, 50, 2, 1, "Нет", path, client, this, stage);
+        NewElementsCreator.createBackButton(gridPane, 50, 50, 2, 1, "Нет", dir + '/' + fileName, client, this, stage);
     }
 
     /**
@@ -109,26 +111,27 @@ public class ClientUI {
      *
      * @param gridPane on which objects will be placed
      * @param client   to communicate with the server
-     * @param path     path of the file, that would be download
+     * @param dir      directory of the file, that would be download
+     * @param fileName name of the file, that would be download
      */
-    private void download(GridPane gridPane, Client client, String path) {
-        gridPane.getChildren().clear();
+    private void download(GridPane gridPane, Client client, String dir, String fileName) {
         FileChooser fileChooser = new FileChooser();
+        File dirFile = new File(dir);
+        fileChooser.setInitialDirectory(dirFile);
+        fileChooser.setInitialFileName(fileName);
         File selectedFile = fileChooser.showSaveDialog(stage);
         try {
-            client.get(path, selectedFile.getAbsolutePath());
-            afterDownload(gridPane, client, path);
+            client.get(dir + '/' + fileName, selectedFile.getAbsolutePath());
+            afterDownload(gridPane, client, dir + '/' + fileName);
         } catch (IOException e) {
-        if (gridPane.getChildren().size() > 4) {
-            for (int i = 4; i < gridPane.getChildren().size(); i++) {
-                gridPane.getChildren().remove(i);
+            if (gridPane.getChildren().size() > 4) {
+                for (int i = 4; i < gridPane.getChildren().size(); i++) {
+                    gridPane.getChildren().remove(i);
+                }
             }
+            NewElementsCreator.createLabel(gridPane, 50, 300, 0, 2, e.getMessage(), "#ff0000");
         }
-        NewElementsCreator.createLabel(gridPane, 50, 300, 0, 2, e.getMessage(), "#ff0000");
     }
-    }
-
-
 
 
     /**
