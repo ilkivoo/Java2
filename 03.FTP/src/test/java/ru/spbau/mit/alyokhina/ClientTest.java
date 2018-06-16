@@ -85,157 +85,143 @@ public class ClientTest {
     }
 
     @Test
-    public void testCreateClientAndServer() {
-        try {
-            if (!isCreateServer) {
-                final Server server = new Server(1408);
-                Thread thread = new Thread(server::start);
-                thread.start();
-                isCreateServer = true;
-            }
-            new Client("localhost", 1408);
+    public void testCreateClientAndServer() throws IOException {
 
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        if (!isCreateServer) {
+            final Server server = new Server(1408);
+            Thread thread = new Thread(server::start);
+            thread.start();
+            isCreateServer = true;
         }
+        new Client("localhost", 1408);
+
+
     }
 
 
     @Test
-    public void testListWithOneClient() {
-        try {
-            if (!isCreateServer) {
-                final Server server = new Server(1408);
-                Thread thread = new Thread(server::start);
-                thread.start();
-                isCreateServer = true;
-            }
-            Client client = new Client("localhost", 1408);
-            List<Pair<String, Boolean>> files = client.list(dirTestList1.getAbsolutePath());
-            List<Pair<String, Boolean>> rightAnswer = new ArrayList<>();
-            rightAnswer.add(new Pair<>("dir1", true));
-            rightAnswer.add(new Pair<>("dir2", true));
-            rightAnswer.add(new Pair<>("file3", false));
-            rightAnswer.add(new Pair<>("file1", false));
-            rightAnswer.add(new Pair<>("file2", false));
-            assertEquals(rightAnswer.size(), equalLists(rightAnswer, files));
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+    public void testListWithOneClient() throws IOException {
+
+        if (!isCreateServer) {
+            final Server server = new Server(1408);
+            Thread thread = new Thread(server::start);
+            thread.start();
+            isCreateServer = true;
         }
+        Client client = new Client("localhost", 1408);
+        List<Pair<String, Boolean>> files = client.list(dirTestList1.getAbsolutePath());
+        List<Pair<String, Boolean>> rightAnswer = new ArrayList<>();
+        rightAnswer.add(new Pair<>("dir1", true));
+        rightAnswer.add(new Pair<>("dir2", true));
+        rightAnswer.add(new Pair<>("file3", false));
+        rightAnswer.add(new Pair<>("file1", false));
+        rightAnswer.add(new Pair<>("file2", false));
+        assertEquals(rightAnswer.size(), equalLists(rightAnswer, files));
+
     }
 
 
     @Test
-    public void testListWithTwoClients() {
-        try {
-            if (!isCreateServer) {
-                final Server server = new Server(1408);
-                Thread thread = new Thread(server::start);
-                thread.start();
-                isCreateServer = true;
-            }
-            Client client1 = new Client("localhost", 1408);
-            Client client2 = new Client("localhost", 1408);
-            List<Pair<String, Boolean>> files1 = client1.list(dirTestList1.getAbsolutePath());
-            List<Pair<String, Boolean>> files2 = client2.list(dirTestList2.getAbsolutePath());
-            List<Pair<String, Boolean>> rightAnswer1 = new ArrayList<>();
-            rightAnswer1.add(new Pair<>("dir1", true));
-            rightAnswer1.add(new Pair<>("dir2", true));
-            rightAnswer1.add(new Pair<>("file3", false));
-            rightAnswer1.add(new Pair<>("file1", false));
-            rightAnswer1.add(new Pair<>("file2", false));
-            assertEquals(rightAnswer1.size(), equalLists(rightAnswer1, files1));
+    public void testListWithTwoClients() throws IOException {
 
-            List<Pair<String, Boolean>> rightAnswer2 = new ArrayList<>();
-            rightAnswer2.add(new Pair<>("dir1", true));
-            rightAnswer2.add(new Pair<>("dir2", true));
-            rightAnswer2.add(new Pair<>("dir3", true));
-            rightAnswer2.add(new Pair<>("dir4", true));
-            rightAnswer2.add(new Pair<>("dir5", true));
-            rightAnswer2.add(new Pair<>("file1", false));
-            rightAnswer2.add(new Pair<>("file2", false));
-            assertEquals(rightAnswer2.size(), equalLists(files2, rightAnswer2));
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        if (!isCreateServer) {
+            final Server server = new Server(1408);
+            Thread thread = new Thread(server::start);
+            thread.start();
+            isCreateServer = true;
         }
+        Client client1 = new Client("localhost", 1408);
+        Client client2 = new Client("localhost", 1408);
+        List<Pair<String, Boolean>> files1 = client1.list(dirTestList1.getAbsolutePath());
+        List<Pair<String, Boolean>> files2 = client2.list(dirTestList2.getAbsolutePath());
+        List<Pair<String, Boolean>> rightAnswer1 = new ArrayList<>();
+        rightAnswer1.add(new Pair<>("dir1", true));
+        rightAnswer1.add(new Pair<>("dir2", true));
+        rightAnswer1.add(new Pair<>("file3", false));
+        rightAnswer1.add(new Pair<>("file1", false));
+        rightAnswer1.add(new Pair<>("file2", false));
+        assertEquals(rightAnswer1.size(), equalLists(rightAnswer1, files1));
+
+        List<Pair<String, Boolean>> rightAnswer2 = new ArrayList<>();
+        rightAnswer2.add(new Pair<>("dir1", true));
+        rightAnswer2.add(new Pair<>("dir2", true));
+        rightAnswer2.add(new Pair<>("dir3", true));
+        rightAnswer2.add(new Pair<>("dir4", true));
+        rightAnswer2.add(new Pair<>("dir5", true));
+        rightAnswer2.add(new Pair<>("file1", false));
+        rightAnswer2.add(new Pair<>("file2", false));
+        assertEquals(rightAnswer2.size(), equalLists(files2, rightAnswer2));
+
     }
 
     @Test
-    public void testCreateWithNonexistentDirectory() {
-        try {
-            if (!isCreateServer) {
-                final Server server = new Server(1408);
-                Thread thread = new Thread(server::start);
-                thread.start();
-                isCreateServer = true;
-            }
-            Client client = new Client("localhost", 1408);
-            List<Pair<String, Boolean>> files = client.list(dirTestList1.getAbsolutePath() + "/test3");
-            assertEquals(0, files.size());
+    public void testCreateWithNonexistentDirectory() throws IOException {
 
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        if (!isCreateServer) {
+            final Server server = new Server(1408);
+            Thread thread = new Thread(server::start);
+            thread.start();
+            isCreateServer = true;
         }
+        Client client = new Client("localhost", 1408);
+        List<Pair<String, Boolean>> files = client.list(dirTestList1.getAbsolutePath() + "/test3");
+        assertEquals(0, files.size());
+
+
     }
 
 
     @Test
-    public void testGetWithOneClient() {
-        try {
-            if (!isCreateServer) {
-                final Server server = new Server(1408);
-                Thread thread = new Thread(server::start);
-                thread.start();
-                isCreateServer = true;
-            }
-            Client client = new Client("localhost", 1408);
-            client.get(file1ForTestGet.getAbsolutePath(), copyFile1ForTestGet.getAbsolutePath());
-            assertEquals(true, equalFiles(file1ForTestGet, copyFile1ForTestGet));
+    public void testGetWithOneClient() throws IOException {
 
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        if (!isCreateServer) {
+            final Server server = new Server(1408);
+            Thread thread = new Thread(server::start);
+            thread.start();
+            isCreateServer = true;
         }
+        Client client = new Client("localhost", 1408);
+        client.get(file1ForTestGet.getAbsolutePath(), copyFile1ForTestGet.getAbsolutePath());
+        assertEquals(true, equalFiles(file1ForTestGet, copyFile1ForTestGet));
+
+
     }
 
 
     @Test
-    public void testGetWithTwoClients() {
-        try {
-            if (!isCreateServer) {
-                final Server server = new Server(1408);
-                Thread thread = new Thread(server::start);
-                thread.start();
-                isCreateServer = true;
-            }
-            Client client1 = new Client("localhost", 1408);
-            client1.get(file1ForTestGet.getAbsolutePath(), copyFile1ForTestGet.getAbsolutePath());
-            assertEquals(true, equalFiles(file1ForTestGet, copyFile1ForTestGet));
+    public void testGetWithTwoClients() throws IOException {
 
-            Client client2 = new Client("localhost", 1408);
-            client2.get(file2ForTestGet.getAbsolutePath(), copyFile2ForTestGet.getAbsolutePath());
-            assertEquals(true, equalFiles(file2ForTestGet, copyFile2ForTestGet));
-
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        if (!isCreateServer) {
+            final Server server = new Server(1408);
+            Thread thread = new Thread(server::start);
+            thread.start();
+            isCreateServer = true;
         }
+        Client client1 = new Client("localhost", 1408);
+        client1.get(file1ForTestGet.getAbsolutePath(), copyFile1ForTestGet.getAbsolutePath());
+        assertEquals(true, equalFiles(file1ForTestGet, copyFile1ForTestGet));
+
+        Client client2 = new Client("localhost", 1408);
+        client2.get(file2ForTestGet.getAbsolutePath(), copyFile2ForTestGet.getAbsolutePath());
+        assertEquals(true, equalFiles(file2ForTestGet, copyFile2ForTestGet));
+
+
     }
 
     @Test
-    public void testGetWithNonexistentFiles() {
-        try {
-            if (!isCreateServer) {
-                final Server server = new Server(1408);
-                Thread thread = new Thread(server::start);
-                thread.start();
-                isCreateServer = true;
-            }
-            Client client = new Client("localhost", 1408);
-            File file = client.get(dirTestGet.getAbsolutePath() + "/file3", dirTestGet.getAbsolutePath() + "/copyFile3");
-            assertEquals(0, file.length());
+    public void testGetWithNonexistentFiles() throws IOException {
 
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        if (!isCreateServer) {
+            final Server server = new Server(1408);
+            Thread thread = new Thread(server::start);
+            thread.start();
+            isCreateServer = true;
         }
+        Client client = new Client("localhost", 1408);
+        File file = client.get(dirTestGet.getAbsolutePath() + "/file3", dirTestGet.getAbsolutePath() + "/copyFile3");
+        assertEquals(0, file.length());
+
+
     }
 
 
